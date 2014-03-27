@@ -1,12 +1,8 @@
 module QuickDatatablesRails
   module DSL
-    attr_reader :model, :collection, :row, :virtual_columns, :search_for_columns, :sort_column, :sort_direction
+    attr_reader :model, :collection, :row, :selected_columns, :search_for_columns, :default_results_per_page
 
-      def collection_method(collection)
-        @collection = collection
-      end
-
-      def model_as(model)
+      def from(model)
         @model = model
       end
 
@@ -14,14 +10,17 @@ module QuickDatatablesRails
         @row = block
       end
 
-      def add_virtual_column(column_name, db_column_name = nil, &block)
-        @virtual_columns ||= {}
-        @virtual_columns[column_name.to_s] = {block:block_given? ? block : nil , db_column_name:(db_column_name.nil? ? column_name : db_column_name)}
-      end
-
-      def add_search_for(column_name, &block)
+      def search(column_name, &block)
         @search_for_columns ||= {}
         @search_for_columns[column_name.to_s] = block
+      end
+
+      def columns(*columns_name)
+        @selected_columns = columns_name
+      end
+
+      def results_per_page(number)
+        @default_results_per_page = number
       end
   end
 end
