@@ -1,13 +1,35 @@
 require "quick_datatables_rails/version"
-require "quick_datatables_rails/dsl"
 require "quick_datatables_rails/association"
 require 'kaminari'
 
 module QuickDatatablesRails
   class Base
-    extend DSL
     include Association
     DEFAULT_RESULTS_PER_PAGE = 25
+
+    class << self
+      attr_reader :model, :custom_conditions, :row, :selected_columns, :default_results_per_page
+      def from(model)
+        @model = model
+      end
+
+      def row_builder(&block)
+        @row = block
+      end
+
+      def search(column_name, &block)
+        @custom_conditions ||= {}
+        @custom_conditions[column_name.to_s] = block
+      end
+
+      def columns(*columns_name)
+        @selected_columns = columns_name
+      end
+
+      def results_per_page(number)
+        @default_results_per_page = number
+      end
+    end
 
     def initialize(view, from = nil)
       @view = view
@@ -47,7 +69,7 @@ module QuickDatatablesRails
     def model
       if self.class.model.nil?
         begin
-          #susbtract Model name from Datatables class name
+          #substract Model name from Datatables class name
           self.class.to_s.split(/(?=[A-Z])/).first.singularize.constantize
         rescue => e
           raise "Add model_as ModelClass to the class, see documentation"
@@ -92,8 +114,8 @@ module QuickDatatablesRails
 
         column_name = real_column_name_for(column)
         
-        if search_for_columns.has_key?(column)
-          resources = resources.instance_exec column_name.to_s, search_term, &search_for_columns[column]
+        if custom_conditions.has_key?(column)
+          resources = resources.instance_exec column_name.to_s, search_term, &custom_conditions[column]
         else
           resources = resources.where("#{column_name} like ?", "%#{search_term}%")
         end
@@ -123,8 +145,8 @@ module QuickDatatablesRails
       Kaminari
     end
 
-    def search_for_columns
-      self.class.search_for_columns.nil? ? {} : self.class.search_for_columns
+    def custom_conditions
+      self.class.custom_conditions.nil? ? {} : self.class.custom_conditions
     end
 
     def columns
