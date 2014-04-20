@@ -1,14 +1,13 @@
-//= require dataTables/jquery.dataTables
 //= require multi_filter
 
 
 // Usage:
 // 
-//  $('table.data_table').quick_datatable()
+//  $('table.data_table').quickDatatable()
 //  
 //   //pass options to jquery.dataTables with data_table_options key
 // 
-//  $('table.data_table').quick_datatable({
+//  $('table.data_table').quickDatatable({
 //    data_table_options: {
 //      fnDrawCallback: function( oSettings ) {
 //        //do something for each draw, like attach events
@@ -20,7 +19,7 @@
 (function ( $ ) {
 
   var private_vars = null;
-  $.fn.QuickDatatable = function(options) {
+  $.fn.quickDatatable = function(options) {
       
      var settings = $.extend({
           // These are the defaults.
