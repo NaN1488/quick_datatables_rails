@@ -58,9 +58,7 @@ module QuickDatatablesRails
     end
 
   protected
-
-    #reserved columns can neither sortable nor searchable
-    RESERVED_COLUMNS = %w[bulk_actions]
+    
     #return collection or model class
     def collection
       @collection ||= @from.nil? ? model : @from
@@ -71,8 +69,8 @@ module QuickDatatablesRails
         begin
           #substract Model name from Datatables class name
           self.class.to_s.split(/(?=[A-Z])/).first.singularize.constantize
-        rescue => e
-          raise "Add model_as ModelClass to the class, see documentation"
+        rescue
+          raise 'Add model_as ModelClass to the class, see documentation'
         end
       else
         self.class.model
@@ -98,7 +96,7 @@ module QuickDatatablesRails
     end
 
     def order
-       RESERVED_COLUMNS.include?(sort_column.to_s) ? collection : collection.order("#{sort_column} #{sort_direction}")
+      collection.order("#{sort_column} #{sort_direction}")
     end
 
     def data
@@ -175,7 +173,7 @@ module QuickDatatablesRails
     end
 
     def sort_direction
-      params[:sSortDir_0] == "desc" ? "desc" : "asc"
+      params[:sSortDir_0] == 'desc' ? 'desc' : 'asc'
     end
   end
 end
