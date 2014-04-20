@@ -3,7 +3,6 @@ module QuickDatatable
     class InstallGenerator < Rails::Generators::Base
       
       def generate_install
-        include_file_in_application_js('dataTables/jquery.dataTables')
         include_file_in_application_js('quick_datatable')
       end
     
