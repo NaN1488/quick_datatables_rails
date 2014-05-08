@@ -68,7 +68,9 @@ module QuickDatatablesRails
       if self.class.model.nil?
         begin
           #substract Model name from Datatables class name
-          self.class.to_s.split(/(?=[A-Z])/).first.singularize.constantize
+          model_a = self.class.to_s.split(/(?=[A-Z])/)
+          model_a.pop
+          model_a.join.singularize.constantize
         rescue
           raise 'Add model_as ModelClass to the class, see documentation'
         end
