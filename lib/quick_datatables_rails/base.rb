@@ -46,12 +46,12 @@ module QuickDatatablesRails
     end
 
     #delegate all to view_context
-    def method_missing(method, *args)
+    def method_missing(method, *args, &block)
       if @view.respond_to?(method)
         (class << self; self; end).class_eval do
           delegate method, to: :@view
         end
-        self.send method, *args
+        self.send method, *args, &block
       else
         super
       end
