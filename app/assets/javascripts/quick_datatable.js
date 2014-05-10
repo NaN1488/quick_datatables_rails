@@ -79,7 +79,10 @@
           filters[name] = value;
         });
         var oSettings = settings.data_table.fnSettings();
-        oSettings._iDisplayLength = parseInt($(settings.results_per_page).val());
+        result_per_page = parseInt($(settings.results_per_page).val())
+        if (!isNaN(result_per_page)) {
+          oSettings._iDisplayLength = parseInt($(settings.results_per_page).val());
+        }
         settings.data_table.fnMultiFilter(filters);
       });
     }
