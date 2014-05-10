@@ -59,12 +59,15 @@
       });
     }
     function _build_datatable($obj) {
+      
       var data_table_options = {
         sAjaxSource: $obj.data('source'),
-        aoColumns: settings.columns,
-        iDisplayLength: parseInt($(settings.results_per_page).val())
+        aoColumns: settings.columns
       }
-
+      results_per_page = parseInt($(settings.results_per_page).val())
+      if (!isNaN(results_per_page)) {
+        data_table_options['iDisplayLength'] = results_per_page
+      }
       var data_table_options_merged = $.extend(data_table_options,$obj.find("thead tr").data(), settings.default_datatable_options, settings.data_table_options);
       settings.data_table = $obj.dataTable(data_table_options_merged);
     }
@@ -79,9 +82,9 @@
           filters[name] = value;
         });
         var oSettings = settings.data_table.fnSettings();
-        result_per_page = parseInt($(settings.results_per_page).val())
-        if (!isNaN(result_per_page)) {
-          oSettings._iDisplayLength = parseInt($(settings.results_per_page).val());
+        results_per_page = parseInt($(settings.results_per_page).val())
+        if (!isNaN(results_per_page)) {
+          oSettings._iDisplayLength = results_per_page
         }
         settings.data_table.fnMultiFilter(filters);
       });
