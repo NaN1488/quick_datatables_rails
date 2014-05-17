@@ -98,7 +98,7 @@ module QuickDatatablesRails
     end
 
     def order
-      collection.order("#{sort_column} #{sort_direction}")
+      collection.order(" `#{sort_column}` #{sort_direction}")
     end
 
     def data
