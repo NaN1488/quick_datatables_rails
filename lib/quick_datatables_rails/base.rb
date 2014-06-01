@@ -138,7 +138,7 @@ module QuickDatatablesRails
     end
 
     def current_table_name
-      @current_table_name ||= @collection.is_a?(Array) ? @collection.scoped.first.class.table_name : @collection.table_name
+      @current_table_name ||= @collection.is_a?(Array) ? @collection.where(nil).first.class.table_name : @collection.table_name
     end
 
     def paginator

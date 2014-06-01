@@ -23,7 +23,7 @@ module QuickDatatablesRails
             join_associated_column(associated_column)
           else
             @collection = @collection.select(selected_columns)
-            @collection = @collection.scoped.instance_eval &associated_column[:block]
+            @collection = @collection.where(nil).instance_eval &associated_column[:block]
           end
         end
       end
