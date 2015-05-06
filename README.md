@@ -5,7 +5,10 @@ TODO
 ## General Installation
 
 ###Requirements:
-1. Firts you must install jquery-datatables-rails https://github.com/rweng/jquery-datatables-rails
+1. First you must install jquery-datatables-rails 
+https://github.com/rweng/jquery-datatables-rails/releases/tag/v1.12.0
+(currently version 1.12 is the only one supported)
+
 
 ### After install jquery-datatables-rails follow these steps
 
@@ -21,16 +24,16 @@ TODO
 
 1. Run the installer:
 
-        $ rails g quick_datatables:install
+        $ rails g quick_datatable:install
 
 ## Simple Usage:
 
 1. Run the creator:
 
-        $ rails g quick_datatables:create [MODEL]
+        $ rails g quick_datatable:create [MODEL]
   example:
         
-        $ rails g quick_datatables:create product
+        $ rails g quick_datatable:create product
         
   It will create the class ProductsDatatable for you:
         
@@ -42,7 +45,7 @@ TODO
       # Insert an array where each item represents each column displayed in the view 
       # example:
       # [
-      #   prodcut.name,
+      #   product.name,
       #   product.price
       # ]
       # Note: the order of the columns must fit the order in the view
@@ -51,7 +54,7 @@ TODO
   end
   ```
 
-2. **Controller**: Add a json response in your controller and return the instance of `[Model]Datatable` the constructor require the `view_context`
+2. **Controller**: Add a json response in your controller and return the instance of `[Model]Datatable`. The constructor requires the `view_context`
 
   ```ruby
   class ProductsController < ApplicationController
@@ -73,7 +76,8 @@ TODO
     <table id="product_table" class='quick_datatable'>
       <thead>
         <tr>
-          <th data-s-name="[ATTRIBUTE_NAME]">Name</th>
+          <th data-s-name="name">Name</th>
+          <th data-s-name="price">Price</th>
           ...
         </tr>
       </thead>
@@ -83,5 +87,5 @@ TODO
 4. **Javascript**: Call the wrapper QuickDatatable to initialize the table:
   
   ```javascript
-    $('.quick_datatable').QuickDatatable();
+    $('table.quick_datatable').QuickDatatable();
   ```
