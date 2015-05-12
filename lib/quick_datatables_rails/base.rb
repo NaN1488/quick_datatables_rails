@@ -31,9 +31,10 @@ module QuickDatatablesRails
       end
     end
 
-    def initialize(view, from = nil)
+    def initialize(view, from = nil, options = {})
       @view = view
       @from = from
+      @options = options
     end
 
     def as_json(options = {})
