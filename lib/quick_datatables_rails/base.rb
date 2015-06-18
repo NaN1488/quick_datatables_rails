@@ -6,6 +6,7 @@ module QuickDatatablesRails
   class Base
     include Association
     DEFAULT_RESULTS_PER_PAGE = 25
+    ADAPTER_DELIMITER = {'mysql2'=>'`', 'postgresql'=>'"'}
 
     class << self
       attr_reader :model, :custom_conditions, :row, :selected_columns, :default_results_per_page
@@ -62,7 +63,11 @@ module QuickDatatablesRails
     
     #return collection or model class
     def collection
-      @collection ||= @from.nil? ? model : @from
+      @collection ||= begin
+        collection_tmp = @from.nil? ? model : @from
+        @character_delimiter = ADAPTER_DELIMITER[collection_tmp.connection.instance_values["config"][:adapter]]
+      end
+      
     end
 
     def model
@@ -99,7 +104,7 @@ module QuickDatatablesRails
     end
 
     def order
-      collection.order(" `#{current_table_name}`.`#{sort_column}` #{sort_direction}")
+      collection.order(" #{@character_delimiter}#{current_table_name}#{@character_delimiter}.#{@character_delimiter}#{sort_column}#{@character_delimiter} #{sort_direction}")
     end
 
     def data
