@@ -66,6 +66,7 @@ module QuickDatatablesRails
       @collection ||= begin
         collection_tmp = @from.nil? ? model : @from
         @character_delimiter = ADAPTER_DELIMITER[collection_tmp.connection.instance_values["config"][:adapter]]
+        collection_tmp
       end
       
     end
