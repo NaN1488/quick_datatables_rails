@@ -105,7 +105,11 @@ module QuickDatatablesRails
     end
 
     def order
-      collection.order(" #{@character_delimiter}#{current_table_name}#{@character_delimiter}.#{@character_delimiter}#{sort_column}#{@character_delimiter} #{sort_direction}")
+      if associated_columns.has_key? sort_column
+        collection.order(" #{@character_delimiter}#{sort_column}#{@character_delimiter} #{sort_direction}")
+      else
+        collection.order(" #{@character_delimiter}#{current_table_name}#{@character_delimiter}.#{@character_delimiter}#{sort_column}#{@character_delimiter} #{sort_direction}")
+      end
     end
 
     def data
