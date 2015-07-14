@@ -60,7 +60,7 @@ module QuickDatatablesRails
     end
 
   protected
-    
+
     #return collection or model class
     def collection
       @collection ||= begin
@@ -68,7 +68,7 @@ module QuickDatatablesRails
         @character_delimiter = ADAPTER_DELIMITER[collection_tmp.connection.instance_values["config"][:adapter]]
         collection_tmp
       end
-      
+
     end
 
     def model
@@ -120,7 +120,7 @@ module QuickDatatablesRails
         raise IndexError, "No Searchable column for the index: #{index_filter}" if column.nil?
 
         column_name = real_column_name_for(column)
-        
+
         if custom_conditions.has_key?(column)
           resources = resources.instance_exec column_name.to_s, search_term, &custom_conditions[column]
         else
@@ -134,7 +134,7 @@ module QuickDatatablesRails
     def real_column_name_for(column_name)
       if associated_columns.has_key? column_name
         ac = structurize_associated_column(associated_columns[column_name])
-        "#{ac.database_name}.#{ac.table_name}.#{ac.column_name}"
+        "#{ac.table_name}.#{ac.column_name}"
       else
         "#{collection.table_name}.#{column_name}"
       end
@@ -166,7 +166,7 @@ module QuickDatatablesRails
 
     def per_page
       if params[:iDisplayLength].to_i > 0
-        params[:iDisplayLength].to_i 
+        params[:iDisplayLength].to_i
       else
         self.class.default_results_per_page.present? ? self.class.default_results_per_page : DEFAULT_RESULTS_PER_PAGE
       end

@@ -1,6 +1,6 @@
 module QuickDatatablesRails
   module Association
-    
+
     ASSOCIATION_METHOD = 'LEFT OUTER JOIN'
 
     module ClassMethods
@@ -18,7 +18,7 @@ module QuickDatatablesRails
     #Attach virtual columns queries
     def join_associated_columns
       if associated_columns.present?
-        associated_columns.each_value do |associated_column| 
+        associated_columns.each_value do |associated_column|
           if associated_column[:block].nil?
             join_associated_column(associated_column)
           else
@@ -33,9 +33,8 @@ module QuickDatatablesRails
     def join_associated_column(associated_column)
       vc          = structurize_associated_column(associated_column)
       @collection = @collection.select(selected_columns)
-      database_name = vc.database_name.nil? ? '' : "#{vc.database_name}."
-      @collection = @collection.select("#{database_name}#{vc.table_name}.#{vc.column_name} as #{vc.table_name.singularize}_#{vc.column_name}")
-      @collection = @collection.joins("#{ASSOCIATION_METHOD} #{database_name}#{vc.table_name} ON #{database_name}#{vc.table_name}.id = #{current_table_name}.#{vc.table_name.singularize}_id")
+      @collection = @collection.select("#{vc.table_name}.#{vc.column_name} as #{vc.table_name.singularize}_#{vc.column_name}")
+      @collection = @collection.joins("#{ASSOCIATION_METHOD} #{vc.table_name} ON #{vc.table_name}.id = #{current_table_name}.#{vc.table_name.singularize}_id")
     end
 
     def structurize_associated_column(associated_column)
@@ -43,9 +42,8 @@ module QuickDatatablesRails
       model         = associated_column[:db_column_name][:class]
       block         = associated_column[:block]
       table_name    = model.table_name
-      database_name = model.connection.try(:current_database)
 
-      OpenStruct.new({block:block, column_name:column_name, table_name:table_name, database_name:database_name})
+      OpenStruct.new({block:block, column_name:column_name, table_name:table_name})
     end
 
     def associated_columns
