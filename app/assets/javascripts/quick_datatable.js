@@ -2,11 +2,11 @@
 
 
 // Usage:
-// 
+//
 //  $('table.data_table').quickDatatable()
-//  
+//
 //   //pass options to jquery.dataTables with data_table_options key
-// 
+//
 //  $('table.data_table').quickDatatable({
 //    data_table_options: {
 //      fnDrawCallback: function( oSettings ) {
@@ -20,7 +20,7 @@
 
   var private_vars = null;
   $.fn.quickDatatable = function(options) {
-      
+
      var settings = $.extend({
           // These are the defaults.
           columns:[],
@@ -59,7 +59,7 @@
       });
     }
     function _build_datatable($obj) {
-      
+
       var data_table_options = {
         sAjaxSource: $obj.data('source'),
         aoColumns: settings.columns
@@ -73,12 +73,19 @@
     }
 
     function _bind_search($obj){
-      
+
       $(settings.button_search).on('click', function (){
         var filters = {};
         $.each($(settings.fields_for_search), function (i, elem){
           name = $(elem).attr('name');
-          value = $(elem).val();
+          if ($(elem).attr('type') == 'checkbox') {
+            value = ($(elem).is(':checked') ? $(elem).val() : '')
+          }
+          else
+          {
+            value = $(elem).val();
+          }
+          
           filters[name] = value;
         });
         var oSettings = settings.data_table.fnSettings();
@@ -107,8 +114,7 @@
         }
       });
     }
-   
+
   };
 
 }(jQuery));
-
