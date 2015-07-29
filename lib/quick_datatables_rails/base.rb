@@ -108,13 +108,13 @@ module QuickDatatablesRails
       orders = []
       params[:iColumns].to_i.times do |i|
         sort_index = params["iSortCol_#{i}".to_sym]
-        dir_index = params["sSortDir_#{i}".to_sym]
+        order_dir = params["sSortDir_#{i}".to_sym]
         break if sort_index.nil?
         col = sort_column(sort_index)
         if associated_columns.has_key?( col )
-          orders << " #{@character_delimiter}#{col}#{@character_delimiter} #{sort_direction(dir_index)}"
+          orders << " #{@character_delimiter}#{col}#{@character_delimiter} #{sort_direction(order_dir)}"
         else
-          orders << " #{@character_delimiter}#{current_table_name}#{@character_delimiter}.#{@character_delimiter}#{col}#{@character_delimiter} #{sort_direction(dir_index)}"
+          orders << " #{@character_delimiter}#{current_table_name}#{@character_delimiter}.#{@character_delimiter}#{col}#{@character_delimiter} #{sort_direction(order_dir)}"
         end
       end
       collection.order(orders.join(','))
@@ -194,7 +194,7 @@ module QuickDatatablesRails
     end
 
     def sort_direction(col)
-      params[col] == 'desc' ? 'desc' : 'asc'
+      col == 'desc' ? 'desc' : 'asc'
     end
   end
 end
