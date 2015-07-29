@@ -105,11 +105,19 @@ module QuickDatatablesRails
     end
 
     def order
-      if associated_columns.has_key? sort_column
-        collection.order(" #{@character_delimiter}#{sort_column}#{@character_delimiter} #{sort_direction}")
-      else
-        collection.order(" #{@character_delimiter}#{current_table_name}#{@character_delimiter}.#{@character_delimiter}#{sort_column}#{@character_delimiter} #{sort_direction}")
+      orders = []
+      params[:iColumns].to_i.times do |i|
+        sort_index = params["iSortCol_#{i}".to_sym]
+        dir_index = params["sSortDir_#{i}".to_sym]
+        break if sort_index.nil?
+        col = sort_column(sort_index)
+        if associated_columns.has_key?( col )
+          orders << " #{@character_delimiter}#{col}#{@character_delimiter} #{sort_direction(dir_index)}"
+        else
+          orders << " #{@character_delimiter}#{current_table_name}#{@character_delimiter}.#{@character_delimiter}#{col}#{@character_delimiter} #{sort_direction(dir_index)}"
+        end
       end
+      collection.order(orders.join(','))
     end
 
     def data
@@ -176,8 +184,8 @@ module QuickDatatablesRails
       end
     end
 
-    def sort_column
-      column_name = columns[params[:iSortCol_0].to_i]
+    def sort_column(col)
+      column_name = columns[col.to_i]
       if self.class.selected_columns.present? && self.class.selected_columns.map(&:to_s).include?(column_name)
         "#{current_table_name}.#{column_name}"
       else
@@ -185,8 +193,8 @@ module QuickDatatablesRails
       end
     end
 
-    def sort_direction
-      params[:sSortDir_0] == 'desc' ? 'desc' : 'asc'
+    def sort_direction(col)
+      params[col] == 'desc' ? 'desc' : 'asc'
     end
   end
 end
