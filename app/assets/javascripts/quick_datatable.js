@@ -68,7 +68,7 @@
       if (!isNaN(results_per_page)) {
         data_table_options['iDisplayLength'] = results_per_page
       }
-      var data_table_options_merged = $.extend(data_table_options,$obj.find("thead tr").data(), settings.default_datatable_options, settings.data_table_options);
+      var data_table_options_merged = $.extend(data_table_options, settings.default_datatable_options, settings.data_table_options, $obj.find("thead tr").data());
       settings.data_table = $obj.dataTable(data_table_options_merged);
     }
 
