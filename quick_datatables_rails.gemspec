@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir["{app,lib}/**/*"]
   spec.add_dependency "railties", "~> 4.0"
-  spec.add_dependency 'jquery-datatables-rails' , '~> 1.12'
+  spec.add_dependency 'jquery-datatables-rails' , '1.12.0'
   spec.add_dependency 'kaminari', '~> 0.15' 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "rake"
